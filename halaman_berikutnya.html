@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Pemesanan</title>
+    <style>
+      /* Menambahkan styling untuk body */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Menambahkan styling untuk header */
+      h1 {
+        text-align: center;
+        margin-top: 20px;
+        color: #333;
+        font-size: 36px;
+      }
+
+      /* Menambahkan styling untuk container detail */
+      #pesanan-detail {
+        max-width: 800px;
+        margin: 20px auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Styling untuk list dan elemen li */
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin-top: 20px;
+      }
+
+      li {
+        font-size: 18px;
+        color: #555;
+        margin-bottom: 10px;
+        display: grid;
+        grid-template-columns: 1fr 2fr; /* Membuat dua kolom: label dan nilai */
+        align-items: center;
+      }
+
+      /* Styling untuk label (elemen strong) */
+      li strong {
+        text-align: left;
+      }
+
+      /* Styling untuk pesan jika data tidak ditemukan */
+      p {
+        font-size: 18px;
+        color: #e74c3c;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Detail Pemesanan Kamar</h1>
+
+    <div id="pesanan-detail"></div>
+
+    <script>
+      // Ambil data pesanan dari localStorage
+      const pesanan = JSON.parse(localStorage.getItem("pesanan"));
+
+      if (pesanan) {
+        // Logika untuk diskon berdasarkan durasi menginap
+        let diskon = 0;
+        if (pesanan.durasiMenginap >= 3) {
+          diskon = 10; // Diskon 10% jika durasi menginap 3 hari atau lebih
+        }
+
+        // Menyimpan diskon dalam objek pesanan
+        pesanan.diskon = diskon > 0 ? diskon + "%" : "Tidak ada diskon";
+
+        const pesananDetail = `
+    <ul>
+      <li><strong>Nama</strong>: ${pesanan.nama}</li>
+      <li><strong>Jenis Kelamin</strong>: ${pesanan.gender}</li>
+      <li><strong>Nomor Identitas</strong>: ${pesanan.nomorIdentitas}</li>
+      <li><strong>Tipe Kamar</strong>: ${pesanan.tipeKamar}</li>
+      <li><strong>Harga Kamar</strong>: ${pesanan.hargaKamarText}</li>
+      <li><strong>Tanggal Pesan</strong>: ${pesanan.tanggalPesan}</li>
+      <li><strong>Durasi Menginap</strong>: ${pesanan.durasiMenginap} hari</li>
+      <li><strong>Termasuk Breakfast</strong>: ${
+        pesanan.termasukBreakfast ? "Ya" : "Tidak"
+      }</li>
+      <li><strong>Diskon</strong>: ${pesanan.diskon}</li>
+      <li><strong>Total Bayar</strong>: ${pesanan.totalBayar}</li>
+    </ul>
+  `;
+
+        document.getElementById("pesanan-detail").innerHTML = pesananDetail;
+      } else {
+        document.getElementById("pesanan-detail").innerHTML =
+          "<p>Data pemesanan tidak ditemukan.</p>";
+      }
+    </script>
+  </body>
+</html>

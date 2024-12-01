@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Pemesanan Kamar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Link ke file CSS eksternal -->
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      #errorId {
+        color: red;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Sistem Pemesanan Kamar</h1>
+    </header>
+
+    <!-- Navbar diletakkan setelah header -->
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#tentang-kita">Tentang Kita</a></li>
+        <li><a href="#pesan">Pesan Kamar</a></li>
+      </ul>
+    </nav>
+
+    <section id="home">
+      <div class="text-center">
+        <h1 class="text-3xl font-bold mb-4">
+          Selamat Datang di Sistem Pemesanan Kamar
+        </h1>
+        <p class="text-lg mb-4">
+          Pilih kamar yang Anda inginkan dan pesan dengan mudah!
+        </p>
+      </div>
+
+      <div class="kamar">
+        <div class="kamar-item">
+          <h3>Standar</h3>
+          <img src="assets/gambar1.jpg" alt="Kamar Standar" />
+          <p>Harga: Rp 500,000/malam</p>
+        </div>
+        <div class="kamar-item">
+          <h3>Deluxe</h3>
+          <img src="assets/gambar2.jpg" alt="Kamar Deluxe" />
+          <p>Harga: Rp 750,000/malam</p>
+        </div>
+        <div class="kamar-item">
+          <h3>Executive</h3>
+          <img src="assets/gambar3.jpg" alt="Kamar Executive" />
+          <p>Harga: Rp 1,000,000/malam</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tentang Kita Section -->
+    <section id="tentang-kita">
+      <div class="about-us" style="background-color: #f0f0f0; padding: 20px">
+        <h2 style="text-align: center; font-size: 36px">Tentang Kami</h2>
+        <p>
+          Kami adalah hotel yang berdedikasi untuk memberikan kenyamanan dan
+          pelayanan terbaik bagi para tamu kami. Dengan berbagai fasilitas
+          lengkap dan pelayanan yang ramah, kami berkomitmen untuk membuat
+          setiap pengalaman menginap menjadi luar biasa. Hotel kami terletak di
+          lokasi strategis, dekat dengan berbagai tempat wisata, restoran, dan
+          pusat perbelanjaan, menjadikannya pilihan ideal untuk perjalanan
+          bisnis maupun liburan. Kami menawarkan berbagai pilihan kamar, mulai
+          dari kamar standar hingga executive, yang dirancang dengan kenyamanan
+          dan kualitas terbaik.
+          <br /><br />
+          Kami juga memahami pentingnya kenyamanan selama menginap, oleh karena
+          itu, kami menyediakan berbagai layanan tambahan seperti fasilitas
+          olahraga, layanan kamar 24 jam, serta paket-paket menarik untuk
+          membuat liburan Anda lebih menyenangkan. Apapun kebutuhan Anda selama
+          menginap, tim kami siap membantu. Dengan suasana yang hangat dan
+          profesional, kami memastikan Anda merasa seperti di rumah sendiri.
+        </p>
+
+        <div class="contact-info" style="margin-top: 20px">
+          <p><strong>Alamat:</strong> Jalan Raya No. 123, Jakarta</p>
+          <p><strong>Telp:</strong> (021) 12345678</p>
+          <p><strong>Email:</strong> info@hotel.com</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="pesan">
+      <div class="bg-white shadow-md rounded-lg p-8">
+        <h2
+          class="text-center text-lg font-semibold mb-6 bg-blue-500 text-white py-2 rounded"
+        >
+          Form Pemesanan
+        </h2>
+        <form
+          id="form-pemesanan"
+          onsubmit="event.preventDefault(); handleSubmitForm();"
+          action="simpan_pemesanan.php" method="post"
+        >
+          <div class="mb-4">
+            <label for="nama" class="block text-gray-700">Nama Pemesan</label>
+            <input
+              type="text"
+              id="nama"
+              name="nama"
+              class="w-full border border-gray-300 rounded px-3 py-2 mt-1"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700">Jenis Kelamin</label>
+            <div class="flex items-center mt-1">
+              <input
+                type="radio"
+                name="gender"
+                id="male"
+                value="Laki-laki"
+                class="mr-2"
+                required
+              />
+              <label for="male" class="mr-4">Laki-laki</label>
+              <input
+                type="radio"
+                name="gender"
+                id="female"
+                value="Perempuan"
+                class="mr-2"
+              />
+              <label for="female">Perempuan</label>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label for="nomor_identitas">Nomor Identitas:</label>
+            <input
+              type="text"
+              id="nomor_identitas"
+              maxlength="16"
+              placeholder="Masukkan nomor identitas"
+              class="w-full border border-gray-300 rounded px-3 py-2 mt-1"
+              pattern="^\d{16}$"
+              title="Nomor identitas harus terdiri dari 16 digit angka."
+              required
+            />
+            <span id="errorId" class="text-red-500 text-sm"></span>
+          </div>
+
+          <div class="mb-4">
+            <label for="tipe_kamar">Tipe Kamar:</label>
+            <select
+              id="tipe_kamar"
+              onchange="updateHarga()"
+              class="w-full border border-gray-300 rounded px-3 py-2 mt-1"
+              required
+            >
+              <option value="">Pilih Tipe Kamar</option>
+              <option value="standar">Standar</option>
+              <option value="deluxe">Deluxe</option>
+              <option value="executive">Executive</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label for="harga_kamar">Harga:</label>
+            <input
+              type="text"
+              id="harga_kamar"
+              placeholder="Harga akan ditampilkan di sini"
+              class="w-full border border-gray-300 rounded px-3 py-2 mt-1"
+              disabled
+            />
+          </div>
+
+          <div class="mb-4">
+            <label for="tanggal_pesan" class="block text-gray-700"
+              >Tanggal Pesan</label
+            >
+            <input
+              type="date"
+              id="tanggal_pesan"
+              name="tanggal_pesan"
+              class="w-full border border-gray-300 rounded px-3 py-2 mt-1"
+              placeholder="DD/MM/YYYY"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label for="durasi_menginap" class="block text-gray-700"
+              >Durasi Menginap</label
+            >
+            <input
+              type="number"
+              id="durasi_menginap"
+              name="durasi_menginap"
+              class="w-full border border-gray-300 rounded px-3 py-2 mt-1"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <div class="mb-4">
+                <label for="termasuk_breakfast" class="block text-gray-700">Termasuk Breakfast</label>
+                <div class="flex items-center mt-1">
+                  <input
+                    type="checkbox"
+                    id="termasuk_breakfast"
+                    name="termasuk_breakfast"
+                    class="mr-2"
+                    onchange="updateTotalHarga()"
+                  />
+                  <label for="termasuk_breakfast">Ya</label>
+                </div>
+              </div>
+          <div class="mb-4">
+            <label for="total_bayar" class="block text-gray-700"
+              >Total Bayar</label
+            >
+            <input
+              type="text"
+              id="total_bayar"
+              name="total_bayar"
+              class="w-full border border-gray-300 rounded px-3 py-2 mt-1"
+              readonly
+            />
+          </div>
+          <div class="flex justify-between">
+            <button
+              type="button"
+              onclick="hitungTotalBayar()"
+              class="bg-gray-500 text-white px-4 py-2 rounded"
+            >
+              Hitung Total Bayar
+            </button>
+            <div>
+              <button
+                type="submit"
+                class="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+              >
+                Simpan
+              </button>
+              <button
+                type="reset"
+                class="bg-gray-300 text-white px-4 py-2 rounded"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <script>
+      function validateNomorIdentitas() {
+        const nomorIdentitas = document.getElementById("nomor_identitas").value;
+        const errorId = document.getElementById("errorId");
+
+        // Cek jika input kosong
+        if (!nomorIdentitas) {
+          errorId.textContent = "Kolom ini wajib diisi.";
+        }
+        // Cek jika nomor identitas tidak valid (harus 16 digit angka)
+        else if (!/^[0-9]{16}$/.test(nomorIdentitas)) {
+          errorId.textContent =
+            "Nomor identitas harus terdiri dari 16 digit angka.";
+        } else {
+          errorId.textContent = ""; // Bersihkan pesan kesalahan jika valid
+        }
+      }
+
+      // Set tanggal minimum input untuk tanggal pesan menjadi hari ini
+      document.addEventListener("DOMContentLoaded", function () {
+        const today = new Date().toISOString().split("T")[0]; // Mendapatkan tanggal hari ini dalam format YYYY-MM-DD
+        document.getElementById("tanggal_pesan").setAttribute("min", today);
+      });
+
+      let hargaKamar = 0; // Variabel untuk harga kamar yang dipilih
+    const hargaSarapan = 80000; // Biaya sarapan per hari
+
+    // Fungsi untuk memperbarui harga berdasarkan pilihan tipe kamar
+    function updateHarga() {
+      const tipeKamar = document.getElementById("tipe_kamar").value;
+      const hargaInput = document.getElementById("harga_kamar");
+
+      switch (tipeKamar) {
+        case "standar":
+          hargaKamar = 500000; // Harga untuk tipe standar
+          break;
+        case "deluxe":
+          hargaKamar = 700000; // Harga untuk tipe deluxe
+          break;
+        case "executive":
+          hargaKamar = 1000000; // Harga untuk tipe executive
+          break;
+        default:
+          hargaKamar = 0; // Jika tidak ada pilihan
+      }
+
+      hargaInput.value = hargaKamar ? "Rp " + hargaKamar.toLocaleString() : "";
+      updateTotalHarga(); // Memperbarui total harga setelah harga kamar berubah
+    }
+
+    function updateTotalHarga() {
+        const durasiMenginap = parseInt(document.getElementById("durasi_menginap").value) || 1; // Durasi menginap
+        const termasukBreakfast = document.getElementById("termasuk_breakfast").checked; // Menyimpan status checkbox sarapan
+      
+        // Perhitungan total harga
+        let totalHarga = hargaKamar * durasiMenginap;
+      
+        // Jika sarapan dipilih, tambahkan biaya sarapan (biaya sarapan x (durasi menginap - 1))
+        if (termasukBreakfast) {
+          totalHarga += hargaSarapan * (durasiMenginap - 1);
+        }
+      
+        // Jika durasi menginap lebih dari 3 hari, misalnya memberikan diskon 10%
+        if (durasiMenginap >= 3) {
+          totalHarga *= 0.9; // Diskon 10%
+          alert("Durasi menginap lebih dari 3 hari! Anda mendapatkan diskon 10%.");
+        }
+      
+        const totalHargaInput = document.getElementById("total_bayar");
+      
+        totalHargaInput.value = "Rp " + totalHarga.toLocaleString(); // Menampilkan total harga dalam format rupiah
+      }
+      
+
+    // Fungsi untuk menampilkan hasil form dalam bentuk array
+    function handleSubmitForm() {
+        const nama = document.getElementById("nama").value;
+        const gender = document.querySelector('input[name="gender"]:checked')?.value || '';
+        const nomorIdentitas = document.getElementById("nomor_identitas").value;
+        const tipeKamar = document.getElementById("tipe_kamar").value;
+        const hargaKamarText = document.getElementById("harga_kamar").value;
+        const tanggalPesan = document.getElementById("tanggal_pesan").value;
+        const durasiMenginap = document.getElementById("durasi_menginap").value;
+        const termasukBreakfast = document.getElementById("termasuk_breakfast").checked;
+        const totalBayar = document.getElementById("total_bayar").value;
+
+        const formData = {
+          nama,
+          gender,
+          nomorIdentitas,
+          tipeKamar,
+          hargaKamar: hargaKamarText,
+          tanggalPesan,
+          durasiMenginap,
+          termasukBreakfast,
+          totalBayar,
+        };
+
+        // Menampilkan data form sebagai array di konsol
+        console.log("Form Data: ", Object.entries(formData));
+      }
+      function handleSubmitForm() {
+        const nama = document.getElementById("nama").value;
+        const gender = document.querySelector('input[name="gender"]:checked')?.value || '';
+        const nomorIdentitas = document.getElementById("nomor_identitas").value;
+        const tipeKamar = document.getElementById("tipe_kamar").value;
+        const hargaKamarText = document.getElementById("harga_kamar").value;
+        const tanggalPesan = document.getElementById("tanggal_pesan").value;
+        const durasiMenginap = document.getElementById("durasi_menginap").value;
+        const termasukBreakfast = document.getElementById("termasuk_breakfast").checked;
+        const totalBayar = document.getElementById("total_bayar").value;
+      
+        const formData = {
+          nama,
+          gender,
+          nomorIdentitas,
+          tipeKamar,
+          hargaKamarText,
+          tanggalPesan,
+          durasiMenginap,
+          termasukBreakfast,
+          totalBayar,
+        };
+      
+        // Simpan data ke localStorage
+        localStorage.setItem('pesanan', JSON.stringify(formData));
+      
+        // Redirect ke halaman berikutnya
+        window.location.href = 'halaman_berikutnya.html';
+      }
+
+    </script>
+  </body>
+</html>
